@@ -1,6 +1,8 @@
 var { Parser } = require("json2csv");
+const csvtojson = require("csvtojson");
 
 const Contact = require("../models/contact");
+const Group = require("../models/group");
 
 exports.downloadCsv = async (req, res, next) => {
   let docs = await Contact.find({}).populate("groups");
@@ -41,4 +43,30 @@ exports.downloadCsv = async (req, res, next) => {
     console.log("error:", error.message);
     res.status(500).send(error.message);
   }
+};
+
+exports.uploadCsv = async (req, res, next) => {
+  let csvData = await csvtojson().fromFile("./uploads/data.csv");
+  let groups = [];
+  csvData = csvData.map((contact) => {
+    groups = groups.concat(contact.Groups.split("|"));
+    return {
+      first_name: contact["First Name"],
+      last_name: contact["First Name"],
+      phone_number: contact.Phone,
+      groups: contact.Groups.split("|"),
+    };
+  });
+  console.log(csvData);
+  // groups
+  // console.log(csvData);
+  // console.log(groups);
+  // try {
+  //   await Group.insertMany();
+  //   await Contact.insertMany(csvData);
+  // } catch (error) {
+  //   console.log("error:", error.message);
+  //   res.status(500).send(error.message);
+  // }
+  res.status(200).json({ message: "File successfuly uploaded." });
 };

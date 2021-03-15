@@ -44,7 +44,7 @@ exports.searchContact = async (req, res, next) => {
     }).populate("groups");
     return res.json({ message: "Searched contacts by name", contacts });
   }
-  if (phone) {
+  if (phone_number) {
     contacts = await Contact.find({
       phone_number: { $regex: `.*${phone_number}.*` },
     }).populate("groups");
@@ -56,6 +56,7 @@ exports.searchContact = async (req, res, next) => {
 
 exports.addContact = async (req, res, next) => {
   const { first_name, last_name, phone_number, groups } = req.body;
+  console.log(req.body);
 
   const contact = await Contact.findOne({ phone_number: phone_number });
   console.log(contact);

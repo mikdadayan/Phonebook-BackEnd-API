@@ -1,6 +1,18 @@
 const Contact = require("../models/contact");
 const Group = require("../models/group");
 
+exports.getGroups = async (req, res, next) => {
+  try {
+    const groups = await Group.find({});
+    res.status(200).json({ message: "All Groups.", groups });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+
 exports.addGroup = async (req, res, next) => {
   const { group_name } = req.body;
 
@@ -23,11 +35,11 @@ exports.addGroup = async (req, res, next) => {
 exports.deleteGroup = async (req, res, next) => {
   const { groupId } = req.params;
   await Group.findByIdAndDelete(groupId);
-  let contacts = await Contact.find({});
+  let contacts = await Contact.find({}).populate("groups");
 
   contacts = contacts.map((contact) => {
     contact.groups = contact.groups.filter((contactGroup) => {
-      return contactGroup === req.params.groupId;
+      return contactGroup._id !== req.params.groupId;
     });
     return contact;
   });
@@ -38,8 +50,6 @@ exports.deleteGroup = async (req, res, next) => {
 exports.updateGroup = async (req, res, next) => {
   const { groupId } = req.params;
   const { group_name } = req.body;
-  console.log(groupId);
-  console.log(group_name);
   const updatedGroup = await Group.findByIdAndUpdate(groupId, {
     group_name: group_name,
   });

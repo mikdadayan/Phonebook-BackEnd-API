@@ -3,6 +3,8 @@ const group = require("../../controllers/group");
 
 const router = express.Router();
 
+router.get("/", group.getGroups);
+
 router.post("/", group.addGroup);
 
 router.delete("/:groupId/", group.deleteGroup);
