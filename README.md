@@ -1,4 +1,4 @@
-# contact-info-backend-api
+# phonebook-backend-api
 
 ## To run this application
 
@@ -11,9 +11,6 @@
 1. `git clone https://github.com/mikdadayan/tournaments-search-for-deploy-backend.git`
 2. `docker-compose up --build`
 
-<!-- ## Live
-
-https://contacts-app-9346.web.app/ -->
 
 ## Here is an explanation of how to configure form with config file
 

@@ -1,4 +1,5 @@
 const Contact = require("../models/contact");
+const Group = require("../models/group");
 
 exports.getAllContacts = async (req, res, next) => {
   try {
@@ -59,7 +60,6 @@ exports.addContact = async (req, res, next) => {
   console.log(req.body);
 
   const contact = await Contact.findOne({ phone_number: phone_number });
-  console.log(contact);
   if (contact) {
     return res.status(400).json({ message: "Phone number already exists." });
   }
@@ -83,7 +83,11 @@ exports.updateContact = async (req, res, next) => {
   const { contactId } = req.params;
   const { first_name, last_name, phone_number, groups } = req.body;
   try {
-    const contact = await Contact.findById(contactId);
+    let contact = await Contact.findById(contactId);
+    // let filteredGroups = await Group.find({ group_name: { $in: groups } });
+    // filteredGroups = filteredGroups.map((group) => group._id);
+    // console.log(filteredGroups);
+
     if (!contact) {
       return res.status(400).json({ message: "Contact does not exists." });
     }
@@ -92,9 +96,8 @@ exports.updateContact = async (req, res, next) => {
     contact.phone_number = phone_number;
     contact.groups = groups;
 
-    await contact.save();
-    console.log(contact);
-    res
+    contact = await contact.save();
+    return res
       .status(200)
       .json({ message: "Contact Updated", updatedContact: contact });
   } catch (err) {
