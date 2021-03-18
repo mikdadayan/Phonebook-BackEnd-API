@@ -2,7 +2,6 @@ var { Parser } = require("json2csv");
 const csvtojson = require("csvtojson");
 
 const Contact = require("../models/contact");
-const Group = require("../models/group");
 
 exports.downloadCsv = async (req, res, next) => {
   let docs = await Contact.find({}).populate("groups");

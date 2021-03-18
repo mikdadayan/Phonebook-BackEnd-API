@@ -57,7 +57,6 @@ exports.searchContact = async (req, res, next) => {
 
 exports.addContact = async (req, res, next) => {
   const { first_name, last_name, phone_number, groups } = req.body;
-  console.log(req.body);
 
   const contact = await Contact.findOne({ phone_number: phone_number });
   if (contact) {
