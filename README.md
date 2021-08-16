@@ -22,7 +22,6 @@ The db file inside of `./config/db.js` contains setup to connect mongodb.
 
 ## Contact Endpoints Description
 
-```javascript
 contact: [
   {
     name: "Create New Contact",
